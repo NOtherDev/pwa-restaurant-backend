@@ -1,0 +1,17 @@
+{
+  "name": "pwa-restaurant-backend",
+  "version": "0.0.1",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/NOtherDev/pwa-restaurant-backend.git"
+  },
+  "author": "Adam Bar",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.16.4"
+  }
+}
