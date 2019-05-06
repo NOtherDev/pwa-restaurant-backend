@@ -1,9 +1,9 @@
 {
   "name": "pwa-restaurant-backend",
   "version": "0.0.1",
-  "main": "index.js",
+  "main": "main/index.ts",
   "scripts": {
-    "start": "node index.js"
+    "start": "PORT=3300 heroku local web"
   },
   "repository": {
     "type": "git",
@@ -11,7 +11,19 @@
   },
   "author": "Adam Bar",
   "license": "MIT",
+  "engines": {
+    "node": ">=8.11"
+  },
   "dependencies": {
-    "express": "^4.16.4"
+    "express": "^4.16.4",
+    "pg": "^7.10.0",
+    "reflect-metadata": "^0.1.13",
+    "ts-node": "^8.1.0",
+    "typeorm": "^0.2.17",
+    "typescript": "^3.4.5"
+  },
+  "devDependencies": {
+    "@types/express": "^4.16.1",
+    "@types/node": "^12.0.0"
   }
 }
