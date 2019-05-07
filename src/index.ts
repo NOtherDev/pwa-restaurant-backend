@@ -1,9 +1,11 @@
 import express from 'express'
-
 import "reflect-metadata"
 import {ConnectionOptions, createConnection} from "typeorm"
 import * as ORMConfig from "../ormconfig.json"
-import {User} from "./entity/User"
+
+import {getDishes} from './seed'
+import menuApi from './menuApi'
+import {Dish} from './entity/Dish'
 
 const PORT = process.env.PORT || 3300
 
@@ -19,22 +21,20 @@ const connectionOptions: ConnectionOptions = {
 }
 
 createConnection(connectionOptions).then(async connection => {
+    const [, count] = await connection.manager.findAndCount(Dish)
 
-    console.log("Inserting a new user into the database...")
-    const user = new User()
-    user.firstName = "Timber"
-    user.lastName = "Saw"
-    user.age = 25
-    await connection.manager.save(user)
-    console.log("Saved a new user with id: " + user.id)
+    if (!count) {
+        const seed = [...getDishes()]
+        await connection.manager.save(seed)
+    }
 
-    console.log("Loading users from the database...")
-    const users = await connection.manager.find(User)
-    console.log("Loaded users: ", users)
+    const app = express()
 
-    express()
-        .get('/', (req, res) => res.send("Hello from the backend"))
-        .listen(PORT, () => console.log(`Listening on ${PORT}`))
+    app.get('/', (req, res) => res.send("Hello from the backend"))
+
+    menuApi(app, connection.manager.getRepository(Dish))
+
+    app.listen(PORT, () => console.log(`Listening on ${PORT}`))
 
 }).catch(error => console.log(error))
 
