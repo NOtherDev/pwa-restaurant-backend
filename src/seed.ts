@@ -1,4 +1,4 @@
-import {Dish} from './entity/Dish'
+import Dish from './entity/Dish'
 
 export function getDishes() {
     return [

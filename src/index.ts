@@ -1,11 +1,14 @@
-import express from 'express'
+import express, * as Express from 'express'
 import "reflect-metadata"
 import {ConnectionOptions, createConnection} from "typeorm"
+import bodyParser from 'body-parser'
+
 import * as ORMConfig from "../ormconfig.json"
 
 import {getDishes} from './seed'
-import menuApi from './menuApi'
-import {Dish} from './entity/Dish'
+import menuApi from './api/menu/menuApi'
+import Dish from './entity/Dish'
+import orderApi from './api/order/orderApi'
 
 const PORT = process.env.PORT || 3300
 
@@ -29,10 +32,17 @@ createConnection(connectionOptions).then(async connection => {
     }
 
     const app = express()
+    app.use(bodyParser.json())
 
     app.get('/', (req, res) => res.send("Hello from the backend"))
 
-    menuApi(app, connection.manager.getRepository(Dish))
+    menuApi(app, connection.manager)
+    orderApi(app, connection.manager)
+
+    app.use((error: Error, req: Express.Request, res: Express.Response, next: Express.NextFunction) => {
+        console.error(error)
+        res.status(500).send({error: error.message})
+    })
 
     app.listen(PORT, () => console.log(`Listening on ${PORT}`))
 

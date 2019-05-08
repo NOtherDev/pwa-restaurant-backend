@@ -1,7 +1,7 @@
 import {Entity, PrimaryGeneratedColumn, Column} from "typeorm";
 
 @Entity()
-export class Dish {
+export default class Dish {
     constructor(name: string, group: string, price: number) {
         this.name = name
         this.group = group
