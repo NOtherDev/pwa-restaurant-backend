@@ -10,6 +10,7 @@ import menuApi from './api/menu/menuApi'
 import Dish from './entity/Dish'
 import orderApi from './api/order/orderApi'
 import authMiddleware from './api/auth'
+import subscriptionsApi from './api/notifications/subscriptionsApi'
 
 const PORT = process.env.PORT || 3300
 
@@ -40,6 +41,7 @@ createConnection(connectionOptions).then(async connection => {
 
     menuApi(app, connection.manager)
     orderApi(app, connection.manager)
+    subscriptionsApi(app, connection.manager)
 
     app.use((error: Error, req: Express.Request, res: Express.Response, next: Express.NextFunction) => {
         console.error(error)
