@@ -48,16 +48,20 @@ export default function orderApi(app: Express, entities: EntityManager, pushServ
     }))
 
     function enqueuePushNotification(userId: string, order: Order) {
+        const secondsToWait = 30
+
+        console.log(`Enqueuing push message to '${userId}' about orderId='${order.id}' in ${secondsToWait} seconds.`)
+
         setTimeout(async () => {
             try {
                 await pushService.sendPushToUser(userId, {
                     orderId: order.id,
                     event: 'OrderReady'
                 })
-                console.log(`Sent push message to ${userId} about orderId=${order.id}.`)
+                console.log(`Sent push message to '${userId}' about orderId='${order.id}'.`)
             } catch (e) {
-                console.warn(`Cannot send push message to ${userId} about orderId=${order.id}: ${e}.`)
+                console.warn(`Cannot send push message to '${userId}' about orderId='${order.id}': ${e}`)
             }
-        }, 30 * 1000)
+        }, secondsToWait * 1000)
     }
 }
