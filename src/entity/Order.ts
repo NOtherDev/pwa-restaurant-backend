@@ -24,7 +24,7 @@ export default class Order {
     }
 
     updateItems(items: OrderItem[]) {
-        this.items = items || []
+        this.items = (items || []).filter((item) => !!item.dish)
 
         this.items.forEach((item) => {
             item.order = this
