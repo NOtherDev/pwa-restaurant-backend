@@ -6,17 +6,21 @@ export default class Order {
     @PrimaryColumn()
     id: string
 
+    @Column({nullable: false})
+    userId: string
+
     @Column({nullable: true})
     discount?: number
 
-    @Column({nullable: false})
+    @Column({nullable: false, default: 0.0})
     totalPrice: number
 
     @OneToMany((type) => OrderItem, item => item.order)
     items: OrderItem[]
 
-    constructor(id: string) {
+    constructor(id: string, userId: string) {
         this.id = id
+        this.userId = userId
     }
 
     updateItems(items: OrderItem[]) {

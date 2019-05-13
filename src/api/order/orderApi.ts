@@ -16,14 +16,21 @@ interface RawItem {
 export default function orderApi(app: Express, entities: EntityManager) {
     app.get('/orders', catchErrors(async (req, res) => {
         const orders = await entities.find(Order, {
-            relations: ["items", "items.dish"]
+            where: {userId: req.userId},
+            relations: ["items", "items.dish"],
         })
 
         res.send(orders.map((order) => createOrderResponse(order)))
     }))
 
     app.put('/orders/:orderId', catchErrors(async (req, res) => {
-        const order = await entities.findOne(Order, req.params.orderId) || new Order(req.params.orderId)
+        const order = await entities.findOne(Order, req.params.orderId) ||
+                      await entities.save(new Order(req.params.orderId, req.userId))
+
+        if (order.userId !== req.userId) {
+            res.sendStatus(403)
+            return
+        }
 
         const items: RawItem[] = req.body.items || []
         const dishes = keyBy(await entities.find(Dish), 'id')

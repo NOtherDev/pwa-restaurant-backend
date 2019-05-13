@@ -9,6 +9,9 @@ import {getDishes} from './seed'
 import menuApi from './api/menu/menuApi'
 import Dish from './entity/Dish'
 import orderApi from './api/order/orderApi'
+import authMiddleware from './api/auth'
+import Order from './entity/Order'
+import OrderItem from './entity/OrderItem'
 
 const PORT = process.env.PORT || 3300
 
@@ -33,6 +36,7 @@ createConnection(connectionOptions).then(async connection => {
 
     const app = express()
     app.use(bodyParser.json())
+    app.use(authMiddleware)
 
     app.get('/', (req, res) => res.send("Hello from the backend"))
 
