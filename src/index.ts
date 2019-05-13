@@ -10,8 +10,6 @@ import menuApi from './api/menu/menuApi'
 import Dish from './entity/Dish'
 import orderApi from './api/order/orderApi'
 import authMiddleware from './api/auth'
-import Order from './entity/Order'
-import OrderItem from './entity/OrderItem'
 
 const PORT = process.env.PORT || 3300
 

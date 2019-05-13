@@ -9,10 +9,10 @@ export default class Order {
     @Column({nullable: false})
     userId: string
 
-    @Column({nullable: true})
+    @Column({nullable: true, type: "decimal"})
     discount?: number
 
-    @Column({nullable: false, default: 0.0})
+    @Column({nullable: false, type: "decimal", default: 0.0})
     totalPrice: number
 
     @OneToMany((type) => OrderItem, item => item.order)

@@ -17,6 +17,6 @@ export default class Dish {
     @Column()
     group: string;
 
-    @Column()
+    @Column({type: "decimal"})
     price: number;
 }

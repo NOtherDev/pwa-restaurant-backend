@@ -13,7 +13,7 @@ export default class OrderItem {
     @ManyToOne((type) => Dish, {nullable: false})
     dish: Dish
 
-    @Column({nullable: false})
+    @Column({nullable: false, type: "decimal"})
     quantity: number
 
     @Column({nullable: true})

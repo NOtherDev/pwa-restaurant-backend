@@ -35,6 +35,7 @@ export default function orderApi(app: Express, entities: EntityManager) {
         const items: RawItem[] = req.body.items || []
         const dishes = keyBy(await entities.find(Dish), 'id')
 
+        await entities.delete(OrderItem, {orderId: req.params.orderId})
         order.updateItems(items.map((item) => new OrderItem(dishes[item.dishId], item.quantity || 1)))
 
         await entities.save(order.items)
