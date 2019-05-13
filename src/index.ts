@@ -11,6 +11,8 @@ import Dish from './entity/Dish'
 import orderApi from './api/order/orderApi'
 import authMiddleware from './api/auth'
 import subscriptionsApi from './api/notifications/subscriptionsApi'
+import PushService from './api/notifications/pushService'
+import Subscription from './entity/Subscription'
 
 const PORT = process.env.PORT || 3300
 
@@ -39,8 +41,10 @@ createConnection(connectionOptions).then(async connection => {
 
     app.get('/', (req, res) => res.send("Hello from the backend"))
 
+    const pushService = new PushService(connection.getRepository(Subscription))
+
     menuApi(app, connection.manager)
-    orderApi(app, connection.manager)
+    orderApi(app, connection.manager, pushService)
     subscriptionsApi(app, connection.manager)
 
     app.use((error: Error, req: Express.Request, res: Express.Response, next: Express.NextFunction) => {
