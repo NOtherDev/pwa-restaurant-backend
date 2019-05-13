@@ -2,6 +2,7 @@ import express, * as Express from 'express'
 import "reflect-metadata"
 import {ConnectionOptions, createConnection} from "typeorm"
 import bodyParser from 'body-parser'
+import cors from "cors"
 
 import * as ORMConfig from "../ormconfig.json"
 
@@ -37,6 +38,7 @@ createConnection(connectionOptions).then(async connection => {
 
     const app = express()
     app.use(bodyParser.json())
+    app.use(cors())
     app.use(authMiddleware)
 
     app.get('/', (req, res) => res.send("Hello from the backend"))
