@@ -18,6 +18,9 @@ export default function orderApi(app: Express, entities: EntityManager, pushServ
     app.get('/orders', catchErrors(async (req, res) => {
         const orders = await entities.find(Order, {
             where: {userId: req.userId},
+            skip: parseInt(req.query.skip) || 0,
+            take: parseInt(req.query.take) || 25,
+            order: {createdAt: 'DESC'},
             relations: ["items", "items.dish"],
         })
 
