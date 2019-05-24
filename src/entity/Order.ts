@@ -1,4 +1,4 @@
-import {Entity, PrimaryColumn, Column, OneToMany} from "typeorm";
+import {Entity, PrimaryColumn, Column, OneToMany, UpdateDateColumn, CreateDateColumn} from "typeorm";
 import OrderItem from './OrderItem'
 
 @Entity()
@@ -17,6 +17,12 @@ export default class Order {
 
     @OneToMany((type) => OrderItem, item => item.order)
     items: OrderItem[]
+
+    @CreateDateColumn()
+    createdAt: Date
+
+    @UpdateDateColumn()
+    updatedAt: Date
 
     constructor(id: string, userId: string) {
         this.id = id
