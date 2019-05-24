@@ -25,7 +25,7 @@ export default function orderApi(app: Express, entities: EntityManager, pushServ
     }))
 
     app.put('/orders/:orderId', catchErrors(async (req, res) => {
-        const order = await entities.findOne(Order, req.params.orderId) ||
+        const order = await entities.findOne(Order, req.params.orderId, {relations: ["items"]}) ||
                       await entities.save(new Order(req.params.orderId, req.userId))
 
         if (order.userId !== req.userId) {
@@ -36,7 +36,9 @@ export default function orderApi(app: Express, entities: EntityManager, pushServ
         const items: RawItem[] = req.body.items || []
         const dishes = keyBy(await entities.find(Dish), 'id')
 
-        await entities.delete(OrderItem, {orderId: req.params.orderId})
+        if (order.items) {
+            await entities.remove(order.items)
+        }
         order.updateItems(items.map((item) => new OrderItem(dishes[item.dishId], item.quantity || 1)))
 
         await entities.save(order.items)
