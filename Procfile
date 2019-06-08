@@ -1,1 +1,1 @@
-web: ls -la && ts-node -P tsconfig.json src/index.ts
+web: ts-node src/index.ts
