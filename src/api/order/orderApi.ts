@@ -43,6 +43,7 @@ export default function orderApi(app: Express, entities: EntityManager, pushServ
             await entities.remove(order.items)
         }
         order.updateItems(items.map((item) => new OrderItem(dishes[item.dishId], item.quantity || 1)))
+        order.discount = req.body.discount
 
         await entities.save(order.items)
         await entities.save(order)
