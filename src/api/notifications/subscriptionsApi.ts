@@ -20,4 +20,14 @@ export default function subscriptionsApi(app: Express, entities: EntityManager) 
 
         res.status(201).send({})
     }))
+
+    app.delete('/subscription', catchErrors(async (req, res) => {
+        const subscription = await entities.findOne(Subscription, req.userId)
+
+        if (subscription) {
+            await entities.remove(subscription)
+        }
+
+        res.sendStatus(204)
+    }))
 }
