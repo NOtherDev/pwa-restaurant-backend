@@ -28,6 +28,6 @@ export default function subscriptionsApi(app: Express, entities: EntityManager) 
             await entities.remove(subscription)
         }
 
-        res.sendStatus(204)
+        res.status(201).send({})
     }))
 }
