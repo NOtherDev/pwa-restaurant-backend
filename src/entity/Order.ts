@@ -24,6 +24,9 @@ export default class Order {
     @UpdateDateColumn()
     updatedAt: Date
 
+    @Column({nullable: true})
+    deliveryAddress?: string
+
     constructor(id: string, userId: string) {
         this.id = id
         this.userId = userId

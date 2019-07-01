@@ -44,6 +44,7 @@ export default function orderApi(app: Express, entities: EntityManager, pushServ
         }
         order.updateItems(items.map((item) => new OrderItem(dishes[item.dishId], item.quantity || 1)))
         order.discount = req.body.discount
+        order.deliveryAddress = req.body.deliveryAddress
 
         await entities.save(order.items)
         await entities.save(order)
